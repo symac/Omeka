@@ -2866,9 +2866,11 @@ function text_to_id($text, $prepend = null, $delimiter = '-')
  */
 function url_to_link($str)
 {
-    $pattern = "/(\bhttps?:\/\/\S+\b)/e";
-    $replace = '"<a href=\"".htmlspecialchars("$1")."\">$1</a>"';
-    $str = preg_replace($pattern, $replace, $str);
+    $pattern = "/(\bhttps?:\/\/\S+\b)/";
+    $str = preg_replace_callback($pattern, function($matches)
+	{
+        return "<a href=\"".htmlspecialchars($matches[1])."\">".$matches[1]."</a>";
+	}, $str);
     return $str;
 }
 
